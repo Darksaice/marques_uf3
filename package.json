@@ -1,0 +1,19 @@
+{
+  "name": "marques_uf3",
+  "version": "1.0.0",
+  "description": "Repositorio de la asignatura de Llenguatge de Marques (UF3): Phaser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Darksaice/marques_uf3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Darksaice/marques_uf3/issues"
+  },
+  "homepage": "https://github.com/Darksaice/marques_uf3#readme"
+}
