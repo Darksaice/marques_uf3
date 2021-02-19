@@ -41,6 +41,7 @@ let car_right_top_y = scene_h/2 - 52;
 
 let car_right_bottom_x = scene_w+128;
 let car_right_bottom_y = scene_h/2 - 136;
+let car_speed = 2;
 
 let player;
 let player_init_x = scene_w/2;
@@ -51,17 +52,37 @@ let right_key;
 let down_key;
 let left_key;
 
+let car_list = [
+	{name: "car1", 
+	img: "sedan.png", 
+	speed: 4}, 
+	{name: "car2", 
+	img: "police.png", 
+	speed: 6}, 
+	{name: "car3", 
+	img: "cycle.png", 
+	speed: 2,
+	flip: true},
+	{name: "car4",
+	img: "buggy.png",
+	speed: 3,
+	flip: true}
+];
+
+const PATH = "PNG/Cars/";
+const PATH_CHARS = "PNG/Characters/";
+const CAR_SCALE = 4;
+
 function precarga (){
 	this.load.image("background", "road.jpg");
 	
-	this.load.image("car1", "PNG/Cars/sedan.png");
-	this.load.image("car2", "PNG/Cars/police.png");
-	this.load.image("car3", "PNG/Cars/cycle.png");
-	this.load.image("car4", "PNG/Cars/buggy.png");
-	this.load.image("car5", "PNG/Cars/sedan.png");
-	this.load.image("car6", "PNG/Cars/sedan.png");
+	car_list.forEach(car => {
 	
-	this.load.image("character", "PNG/Characters/man.png");
+	this.load.image(car.name,PATH+car.img);
+	
+	});
+
+	this.load.image("character",PATH_CHARS+"man.png");
 }
 function crear (){
 	bg = this.add.image(scene_w/2,scene_h/2, "background");
@@ -77,12 +98,12 @@ function crear (){
 
 	bg.setScale(2);
 
-	car[0].setScale(4);
-	car[1].setScale(4);
-	car[2].setScale(4);
-	car[2].flipX = true;
-	car[3].setScale(4);
-	car[3].flipX = true;
+	car.forEach( (elemento, index, array) => {
+		elemento.speed = car_list[index].speed;
+		elemento.setScale(CAR_SCALE);
+		if (car_list[index].flip)
+			elemento.flipX = true;
+	});
 
 	player.setScale(4);
 
@@ -90,7 +111,16 @@ function crear (){
   right_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
   down_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
   left_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+}
 
+function comprueba_coche (coche, index, el_array){
+	if (coche.flipX){
+		if (coche.x <= -1280)
+		coche.x = car_right_top_x;
+	} else {
+		if (coche.x >= scene_w + 128)
+		coche.x = car_left_top_x;
+	}
 }
 
 function actualiza (){
@@ -106,11 +136,15 @@ function actualiza (){
 		player.y++;
 	}
 
-car[0].x+=8;
-car[1].x+=8;
-car[2].x-=8;
-car[3].x-=8;
+	car.forEach(coche =>{
+		if (coche.flipX){
+		coche.x -= coche.speed;
+		}else {
+			coche.x += coche.speed;
+		}
+	});
 
+	car.forEach(comprueba_coche);
 
 }
 
