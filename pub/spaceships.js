@@ -38,7 +38,7 @@ function create () {
 		bg = this.add.image(scene_w/2,scene_h/2, "background");
 		player = this.physics.add.image(player_init_x,scene_h/2, "character");
 		player.setScale(1);
-		score = this.add.text(scene_w/2,scene_h/2, "score: "+cont_score);
+		score = this.add.text(scene_w/2,10, "score: "+cont_score);
 		for (let i =0; i < MAX_ENEMIES; i++){
 			let x = Math.random()*scene_w*10 + scene_w/2;
 			let y = Math.random()*scene_h;
@@ -53,10 +53,18 @@ function create () {
 	up_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
   down_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 	space_key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
+	
+	//Comprobación de colision enemigos contra jugador
 	enemies.forEach(function(element){
 		the_game.physics.add.overlap(player,element, function (p,e){
 					the_game.scene.restart();
+		}, null, the_game);
+	});
+
+	//Comprobación de colision enemigos contra bala
+	enemies.forEach(function(element){
+		the_game.physics.add.overlap(bullets,element, function(b,e){	
+				the_game.scene.restart(); //esto debe cambiarse para que no se reinicie
 		}, null, the_game);
 	});
 
@@ -65,13 +73,14 @@ function create () {
 
 function update (){
 	player.rotation = 1.6;
-	
+	//Movimiento del player	
 	if (up_key.isDown){
 		player.y--;
 	} else 	if (down_key.isDown){
 		player.y++;
 	}
-	if (space_key.isDown){
+	//Disparar balas
+	if (Phaser.Input.Keyboard.JustDown(space_key)){ 
 		let found = false;
 		for (let i =0; i < MAX_BULLETS && !found; i++){
 			if (!bullets[i].moving){
@@ -98,8 +107,11 @@ function update (){
 	for (let i =0; i < MAX_ENEMIES; i++){
 		enemies[i].x--;
 	}
-
-
+	
+	//Contador de puntos
+	if (player == 32){
+				cont_score++;
+	}
 
 
 }
