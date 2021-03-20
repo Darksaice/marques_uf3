@@ -87,8 +87,8 @@ function create () {
 	//Comprobación de colision enemigos contra bala
    bullets.forEach(function(element){
      the_game.physics.add.overlap(enemies,element, function(e,e){
-         particle.createEmitter;
-   },null, the_game);
+				particles.createEmitter("explosion");
+	   },null, the_game);
    });
 
 
