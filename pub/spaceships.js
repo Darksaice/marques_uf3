@@ -15,6 +15,8 @@ let space_key;
 let score;
 let cont_score;
 
+let particles;
+
 let the_game;
 
 const BULLET_INIT_X = -1000;
@@ -32,6 +34,7 @@ function  preload (){
 		this.load.image("character","PNG/Default/ship_sidesA.png");
 		this.load.image("enemy","PNG/Default/meteor_detailedLarge.png");
 		this.load.image("bullet", "PNG/Default/star_tiny.png");
+		this.load.image("explosion", "muzzleflash3.png");
 }
 
 function create () {
@@ -61,12 +64,32 @@ function create () {
 		}, null, the_game);
 	});
 
-	//Comprobación de colision enemigos contra bala
-	enemies.forEach(function(element){
-		the_game.physics.add.overlap(bullets,element, function(b,e){	
-				the_game.scene.restart(); //esto debe cambiarse para que no se reinicie
-		}, null, the_game);
+	//Particulas
+	particles = this.add.particles("explosion");
+
+	particles.createEmitter({
+		alpha: {start: 1, end: 0},
+		scale: {start: 0.5, end: 2.5},
+		//tint: {start: 0xff945e, end 0xff945e},
+		speed:20,
+		accelerationY: -300,
+		angle: {min: -85, max: -95},
+		rotate: {min: -180, max: 180},
+		lifespan: {min:1000, ma: 1100},
+		blendMode: 'ADD',
+		frequency: 110,
+		maxParticles:10,
+		x: enemies ,
+		y: enemies
+	
 	});
+
+	//Comprobación de colision enemigos contra bala
+   bullets.forEach(function(element){
+     the_game.physics.add.overlap(enemies,element, function(e,e){
+         particle.createEmitter;
+   },null, the_game);
+   });
 
 
 }
@@ -109,11 +132,14 @@ function update (){
 	}
 	
 	//Contador de puntos
-	if (player == 32){
+	if (bullets == enemies){
+				cont_score+1;
 				cont_score++;
 	}
 
-
+	particles.emitters.first.alive.lenght + "explosion";
+	
+	
 }
 
 const config ={
